@@ -76,7 +76,7 @@
     {
       "vconcat": [
         {
-          "title": {"text": "Top 10 Stations by Annual Entries (linked to slider)", "anchor": "start"},
+          "title": {"text": "Top 10 Stations by Annual Entries", "anchor": "start"},
           "width": 520,
           "height": 520,
           "data": {

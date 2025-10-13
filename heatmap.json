@@ -1,0 +1,86 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "FY2024–25 patronage heatmap by day of week (x) and month (y), filtered by Mode and Day type.",
+  "config": {
+    "view": {"stroke": null},
+    "font": "Inter, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Arial, sans-serif",
+    "axis": {"labelColor": "#333", "titleColor": "#333"},
+    "legend": {"labelColor": "#333", "titleColor": "#333"}
+  },
+
+  "title": {
+    "text": "Average Patronage Heatmap (FY2024–25)",
+    "subtitle": "Select a mode and a day type. Color shows mean of daily average patronage (Pax_daily).",
+    "anchor": "start",
+    "fontWeight": "bold"
+  },
+
+  "width": 560,
+  "height": 340,
+
+  "data": { "url": "data/patronage_2024_25.csv", "format": {"type": "csv"} },
+
+  "params": [
+    {
+      "name": "modeSel",
+      "value": "MetroTrain",
+      "bind": {
+        "input": "select",
+        "name": "Mode: ",
+        "options": ["MetroTrain","MetroBus","RegionalTrain","RegionalBus","Tram"]
+      }
+    },
+    {
+      "name": "dayTypeSel",
+      "value": "Normal Weekday",
+      "bind": {
+        "input": "select",
+        "name": " Day type: ",
+        "options": ["Normal Weekday","School Holiday Weekday","Weekend"]
+      }
+    }
+  ],
+
+  "transform": [
+    {"filter": "(toNumber(datum.Year) >= 2024 && toNumber(datum.Year) <= 2025)"},
+    {"filter": "datum.Mode == modeSel && datum.Day_type == dayTypeSel"},
+    {"calculate": "toNumber(datum.Pax_daily)", "as": "pax"},
+    {
+      "calculate": "indexof(['Jul','Aug','Sep','Oct','Nov','Dec','Jan','Feb','Mar','Apr','May','Jun'], datum.Month_name)",
+      "as": "fy_month_order"
+    }
+  ],
+
+  "mark": {"type": "rect", "cornerRadius": 2},
+
+  "encoding": {
+    "x": {
+      "field": "Day_of_week",
+      "type": "ordinal",
+      "title": "Day of week",
+      "sort": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
+      "axis": {"labelAngle": 0}
+    },
+    "y": {
+      "field": "Month_name",
+      "type": "ordinal",
+      "title": "Month (FY 2024–25)",
+      "sort": {"op": "min", "field": "fy_month_order"}
+    },
+    "color": {
+      "aggregate": "mean",
+      "field": "pax",
+      "type": "quantitative",
+      "title": "Mean daily patronage",
+      "scale": {"scheme": "blues"},
+      "legend": {"format": ","}
+    },
+    "tooltip": [
+      {"field": "Mode", "title": "Mode"},
+      {"field": "Day_type", "title": "Day type"},
+      {"field": "Month_name", "title": "Month"},
+      {"field": "Day_of_week", "title": "Day"},
+      {"aggregate": "mean", "field": "pax", "title": "Mean daily patronage", "format": ","}
+    ]
+  }
+}

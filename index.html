@@ -16,7 +16,7 @@
     small, a{color:#555}
   </style>
 
-  <!-- Vega libraries (Vega-Lite only) -->
+  <!-- Vega libraries -->
   <script src="https://cdn.jsdelivr.net/npm/vega@5/build/vega.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/vega-lite@5/build/vega-lite.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/vega-embed@6/build/vega-embed.min.js"></script>
@@ -24,7 +24,7 @@
 <body>
   <header>
     <h1>Melbourne Train Stations — Interactive Visualisations</h1>
-    <p>Use the slider to filter by annual entries. Hover to see station details. The map shows a Victoria outline for context.</p>
+    <p>Use the controls on each chart to explore the data. The map shows a Victoria outline for context.</p>
   </header>
 
   <section class="grid">
@@ -34,8 +34,18 @@
     </div>
 
     <div class="card">
-      <h3>Top Stations (linked to the same filter)</h3>
+      <h3>Top Stations</h3>
       <div id="bars" class="vis" aria-label="Top stations bar chart"></div>
+    </div>
+
+    <div class="card">
+      <h3>Patronage Heatmap (FY2024–25)</h3>
+      <div id="heatmap" class="vis" aria-label="Patronage heatmap"></div>
+    </div>
+
+    <div class="card">
+      <h3>Monthly Patronage Trends by Mode</h3>
+      <div id="trends" class="vis" aria-label="Monthly trends by mode"></div>
     </div>
   </section>
 
@@ -47,8 +57,10 @@
   </footer>
 
   <script>
-    vegaEmbed('#map',  'map.json',  {actions:false}).catch(console.error);
-    vegaEmbed('#bars', 'bars.json', {actions:false}).catch(console.error);
+    vegaEmbed('#map',     'map.json',     {actions:false}).catch(console.error);
+    vegaEmbed('#bars',    'bars.json',    {actions:false}).catch(console.error);
+    vegaEmbed('#heatmap', 'heatmap.json', {actions:false}).catch(console.error);
+    vegaEmbed('#trends',  'trends.json',  {actions:false}).catch(console.error);
   </script>
 </body>
 </html>
