@@ -1,0 +1,130 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Melbourne train stations — map and bar chart linked by slider.",
+  "config": {
+    "font": "Inter, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Arial, sans-serif",
+    "axis": {"labelColor": "#333", "titleColor": "#333"},
+    "legend": {"labelColor": "#333", "titleColor": "#333"}
+  },
+
+  "params": [
+    {
+      "name": "minPax",
+      "value": 0,
+      "bind": {
+        "input": "range",
+        "min": 0,
+        "max": 20000000,
+        "step": 500000,
+        "name": "Minimum annual entries: "
+      }
+    }
+  ],
+
+  "hconcat": [
+    {
+      "title": {
+        "text": "Melbourne Train Stations — Annual Entries (FY2023–24)",
+        "subtitle": "Stations are sized by total annual entries. Victoria outline provides geographic context.",
+        "anchor": "start",
+        "fontWeight": "bold"
+      },
+      "width": 720,
+      "height": 560,
+      "projection": {"type": "mercator", "center": [144.73, -37.63], "scale": 48000},
+      "layer": [
+        {
+          "data": {
+            "url": "data/victoria_boundary.json",
+            "format": {"type": "topojson", "feature": "VIC"}
+          },
+          "mark": {"type": "geoshape", "fill": "#f7f7f7", "stroke": "#b0b0b0", "strokeWidth": 0.6}
+        },
+        {
+          "data": {
+            "url": "data/annual_metropolitan_train_station_entries_fy_2023_2024.csv",
+            "format": {"type": "csv"}
+          },
+          "transform": [
+            {"calculate": "toNumber(replace(datum.Stop_long, ',', ''))", "as": "lon"},
+            {"calculate": "toNumber(replace(datum.Stop_lat, ',', ''))", "as": "lat"},
+            {"calculate": "toNumber(replace(datum.Pax_annual, ',', ''))", "as": "pax"},
+            {"filter": "isFinite(datum.lon) && isFinite(datum.lat) && isFinite(datum.pax)"},
+            {"filter": "datum.pax >= minPax"},
+            {"calculate": "datum.pax > 0 ? datum.pax : 1", "as": "size_safe"}
+          ],
+          "mark": {"type": "circle", "opacity": 0.85, "stroke": "#2f4b63", "strokeWidth": 0.25},
+          "encoding": {
+            "longitude": {"field": "lon", "type": "quantitative"},
+            "latitude": {"field": "lat", "type": "quantitative"},
+            "size": {
+              "field": "size_safe",
+              "type": "quantitative",
+              "scale": {"type": "sqrt", "range": [10, 1600]},
+              "title": "Annual entries"
+            },
+            "color": {"value": "#4A90E2"},
+            "tooltip": [
+              {"field": "Stop_name", "title": "Station"},
+              {"field": "pax", "title": "Annual entries", "format": ","}
+            ]
+          }
+        }
+      ]
+    },
+
+    {
+      "vconcat": [
+        {
+          "title": {"text": "Top 10 Stations by Annual Entries (linked to slider)", "anchor": "start"},
+          "width": 520,
+          "height": 520,
+          "data": {
+            "url": "data/annual_metropolitan_train_station_entries_fy_2023_2024.csv",
+            "format": {"type": "csv"}
+          },
+          "transform": [
+            {"calculate": "toNumber(replace(datum.Pax_annual, ',', ''))", "as": "pax"},
+            {"filter": "isFinite(datum.pax) && datum.pax >= minPax"},
+            {"window": [{"op": "rank", "as": "rk"}], "sort": [{"field": "pax", "order": "descending"}]},
+            {"filter": "datum.rk <= 10"}
+          ],
+          "mark": {"type": "bar", "cornerRadiusEnd": 2},
+          "encoding": {
+            "y": {"field": "Stop_name", "type": "nominal", "sort": "-x", "title": "Station"},
+            "x": {
+              "field": "pax",
+              "type": "quantitative",
+              "title": "Annual entries",
+              "axis": {"format": ",", "tickCount": 5}
+            },
+            "color": {"value": "#4A90E2"},
+            "tooltip": [
+              {"field": "Stop_name", "title": "Station"},
+              {"field": "pax", "title": "Annual entries", "format": ","}
+            ]
+          }
+        },
+
+        {
+          "width": 520,
+          "height": 28,
+          "data": {"values": [{}]},
+          "transform": [
+            {"calculate": "'Minimum annual entries: ' + format(minPax, ',')", "as": "label"}
+          ],
+          "mark": {"type": "text", "align": "left", "baseline": "middle"},
+          "encoding": {
+            "x": {"value": 0},
+            "y": {"value": 14},
+            "text": {"field": "label"},
+            "color": {"value": "#333"},
+            "size": {"value": 12}
+          }
+        }
+      ]
+    }
+  ],
+
+  "resolve": {"scale": {"size": "independent"}}
+}

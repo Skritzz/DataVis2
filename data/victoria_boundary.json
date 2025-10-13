@@ -1,0 +1,22 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {"name": "Victoria"},
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [140.9617, -34.0025],
+            [141.002, -39.1457],
+            [149.976, -39.1457],
+            [149.976, -36.0],
+            [146.0, -34.0],
+            [140.9617, -34.0025]
+          ]
+        ]
+      }
+    }
+  ]
+}
