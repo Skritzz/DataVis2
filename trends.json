@@ -7,6 +7,9 @@
     "legend": {"labelColor": "#333", "titleColor": "#333"}
   },
 
+  "width": 520,
+  "height": 300,
+
   "data": {
     "url": "data/monthly_public_transport_patronage_by_mode.csv",
     "format": {"type": "csv"}
@@ -27,11 +30,10 @@
       "as": ["Mode", "Patronage"]
     },
     { "calculate": "toNumber(replace(datum.Patronage, ',', ''))", "as": "pax" },
-    {
-      "calculate": "datum.Year + '-' + (length(toString(datum.Month)) < 2 ? '0' + toString(datum.Month) : toString(datum.Month)) + '-01'",
-      "as": "ymd"
-    },
-    { "filter": "isValid(datum.pax)" }
+
+    { "calculate": "datetime(datum.Year, datum.Month - 1, 1)", "as": "date" },
+
+    { "filter": "isFinite(datum.pax)" }
   ],
 
   "params": [
@@ -42,36 +44,29 @@
     }
   ],
 
-  "layer": [
-    {
-      "mark": {"type": "line", "interpolate": "monotone", "strokeWidth": 2},
-      "encoding": {
-        "x": {"field": "ymd", "type": "temporal", "title": "Month"},
-        "y": {"field": "pax", "type": "quantitative", "title": "Monthly patronage", "axis": {"format": ","}},
-        "color": {"field": "Mode", "type": "nominal", "title": "Mode"},
-        "opacity": {"condition": {"param": "modePick", "value": 1}, "value": 0.2},
-        "tooltip": [
-          {"field": "Mode"},
-          {"field": "Year"},
-          {"field": "Month name", "title": "Month"},
-          {"field": "pax", "title": "Patronage", "format": ","}
-        ]
-      }
+  "mark": {
+    "type": "line",
+    "interpolate": "monotone",
+    "strokeWidth": 2,
+    "point": {"filled": true, "size": 20}
+  },
+
+  "encoding": {
+    "x": {"field": "date", "type": "temporal", "title": "Month"},
+    "y": {
+      "field": "pax",
+      "type": "quantitative",
+      "title": "Monthly patronage",
+      "axis": {"format": ","}
     },
-    {
-      "mark": {"type": "point", "filled": true, "size": 20},
-      "encoding": {
-        "x": {"field": "ymd", "type": "temporal"},
-        "y": {"field": "pax", "type": "quantitative"},
-        "color": {"field": "Mode", "type": "nominal"},
-        "opacity": {"condition": {"param": "modePick", "value": 1}, "value": 0.2},
-        "tooltip": [
-          {"field": "Mode"},
-          {"field": "Year"},
-          {"field": "Month name", "title": "Month"},
-          {"field": "pax", "title": "Patronage", "format": ","}
-        ]
-      }
-    }
-  ]
+    "color": {"field": "Mode", "type": "nominal", "title": "Mode"},
+    "detail": {"field": "Mode"},
+    "opacity": {"condition": {"param": "modePick", "value": 1}, "value": 0.2},
+    "tooltip": [
+      {"field": "Mode"},
+      {"field": "Year"},
+      {"field": "Month name", "title": "Month"},
+      {"field": "pax", "title": "Patronage", "format": ","}
+    ]
+  }
 }
