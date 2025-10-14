@@ -15,8 +15,8 @@
     "fontWeight": "bold"
   },
 
-  "width": 560,
-  "height": 340,
+  "width": "container",
+  "height": 420,
 
   "data": { "url": "data/patronage_2024_25.csv", "format": {"type": "csv"} },
 

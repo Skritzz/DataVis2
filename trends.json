@@ -6,9 +6,10 @@
     "axis": {"labelColor": "#333", "titleColor": "#333"},
     "legend": {"labelColor": "#333", "titleColor": "#333"}
   },
-
-  "width": 750,
-  "height": 450,
+  
+  "autosize": { "type": "fit", "contains": "padding" },
+  "width": "container",
+  "height": 400,
 
   "data": {
     "url": "data/monthly_public_transport_patronage_by_mode.csv",
