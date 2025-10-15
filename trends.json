@@ -30,9 +30,11 @@
       ],
       "as": ["Mode", "Patronage"]
     },
-    { "calculate": "toNumber(replace(datum.Patronage, ',', ''))", "as": "pax" },
-
-    { "calculate": "datetime(datum.Year, datum.Month - 1, 1)", "as": "date" },
+    { "calculate": "toNumber(replace('' + datum.Patronage, ',', ''))", "as": "pax" },
+    {
+      "calculate": "datetime(toNumber(datum.Year), toNumber(datum.Month) - 1, 1)",
+      "as": "date"
+    },
 
     { "filter": "isFinite(datum.pax)" }
   ],

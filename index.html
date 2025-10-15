@@ -5,16 +5,68 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Melbourne Train Stations — Interactive Visualisations</title>
 
-  <style>
-    :root { --maxw: 1100px; }
-    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Arial,sans-serif;margin:24px;line-height:1.45}
-    header, .vis, footer{max-width:var(--maxw);margin:0 auto}
-    header h1{margin-bottom:.25rem}
-    .grid{display:grid;grid-template-columns:1fr;gap:28px;max-width:var(--maxw);margin:16px auto}
-    @media (min-width:1100px){ .grid{grid-template-columns: 1.2fr .8fr;} }
-    .card{padding:8px 0}
-    small, a{color:#555}
-  </style>
+<style>
+  :root { --maxw: 1200px; }
+
+  /* Page basics */
+  body{
+    font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Arial,sans-serif;
+    margin:24px;
+    line-height:1.45
+  }
+  header, .grid, footer{
+    max-width:var(--maxw);
+    margin:0 auto
+  }
+  header h1{ margin-bottom:.25rem }
+
+  /* Dashboard grid */
+  .grid{
+    display:grid;
+    grid-template-columns: 1fr;          /* single column on small screens */
+    gap: 28px;
+  }
+
+  /* 2×2 layout on wide screens */
+  @media (min-width:1100px){
+    .grid{
+      grid-template-columns: repeat(2, minmax(0, 1fr));  /* 2 equal columns */
+      align-items: start;                                 /* align to top */
+      justify-items: stretch;                             /* stretch to cell */
+      column-gap: 32px;
+      row-gap: 36px;
+    }
+  }
+
+  /* Cards & embeds */
+  .card{ width:100%; }
+  .vis, .vega-embed{ width:100%; }       /* let charts fill their cells */
+
+  /* Optional: a touch more breathing room */
+  small, a{ color:#555 }
+
+  /* Make the last card span both columns */
+@media (min-width:1100px){
+  .card.full {
+    grid-column: span 2;
+  }
+}
+
+/* Stack heatmap and trends nicely within that card */
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.stack .vis {
+  width: 100%;
+  min-height: 400px;
+}
+
+</style>
+
+
 
   <!-- Vega libraries -->
   <script src="https://cdn.jsdelivr.net/npm/vega@5/build/vega.min.js"></script>
@@ -28,6 +80,7 @@
   </header>
 
   <section class="grid">
+    <!-- Row 1: Map + Bars -->
     <div class="card">
       <h3>Proportional Symbol Map</h3>
       <div id="map" class="vis" aria-label="Map of station patronage"></div>
@@ -38,24 +91,24 @@
       <div id="bars" class="vis" aria-label="Top stations bar chart"></div>
     </div>
 
-    <div class="card">
-      <h3>Patronage Heatmap (FY2024–25)</h3>
-      <div id="heatmap" class="vis" aria-label="Patronage heatmap"></div>
-    </div>
+    <!-- Row 2: Heatmap + Trends stacked in one column -->
+    <div class="card full">
+      <div class="stack">
+        <div>
+          <h3>Patronage Heatmap (FY2024–25)</h3>
+          <div id="heatmap" class="vis" aria-label="Patronage heatmap"></div>
+        </div>
 
-    <div class="card">
-      <h3>Monthly Patronage Trends by Mode</h3>
-      <div id="trends" class="vis" aria-label="Monthly trends by mode"></div>
-    </div>
-
-    <div class="card">
-      <h3>NSW vs Victoria — Monthly Patronage</h3>
-      <div id="compare" class="vis" aria-label="NSW vs Victoria monthly trend"></div>
+        <div>
+          <h3>Monthly Patronage Trends by Mode</h3>
+          <div id="trends" class="vis" aria-label="Monthly trends by mode"></div>
+        </div>
+      </div>
     </div>
   </section>
 
-  
 
+  
   <footer class="vis">
     <hr>
     <small>
@@ -67,7 +120,6 @@
     vegaEmbed('#map',     'map.json',     {actions:false}).catch(console.error);
     vegaEmbed('#heatmap', 'heatmap.json', {actions:false}).catch(console.error);
     vegaEmbed('#trends',  'trends.json',  {actions:false}).catch(console.error);
-    vegaEmbed('#compare', 'comparison.json', {actions:false}).catch(console.error);
   </script>
 </body>
 </html>
