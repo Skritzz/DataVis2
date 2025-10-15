@@ -47,7 +47,14 @@
       <h3>Monthly Patronage Trends by Mode</h3>
       <div id="trends" class="vis" aria-label="Monthly trends by mode"></div>
     </div>
+
+    <div class="card">
+      <h3>NSW vs Victoria — Monthly Patronage</h3>
+      <div id="compare" class="vis" aria-label="NSW vs Victoria monthly trend"></div>
+    </div>
   </section>
+
+  
 
   <footer class="vis">
     <hr>
@@ -60,6 +67,7 @@
     vegaEmbed('#map',     'map.json',     {actions:false}).catch(console.error);
     vegaEmbed('#heatmap', 'heatmap.json', {actions:false}).catch(console.error);
     vegaEmbed('#trends',  'trends.json',  {actions:false}).catch(console.error);
+    vegaEmbed('#compare', 'comparison.json', {actions:false}).catch(console.error);
   </script>
 </body>
 </html>

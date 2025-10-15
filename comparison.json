@@ -1,0 +1,119 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "NSW vs Victoria monthly public transport trips.",
+  "title": {
+    "text": "Monthly Public Transport Trips — NSW vs Victoria",
+    "subtitle": "Totals across all modes; NSW method change annotated (Jul 2024)",
+    "anchor": "start"
+  },
+  "width": "container",
+  "height": 360,
+  "config": {
+    "font": "Inter, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Arial, sans-serif",
+    "axis": {"labelColor": "#333", "titleColor": "#333"},
+    "legend": {"labelColor": "#333", "titleColor": "#333"}
+  },
+
+  "layer": [
+    {
+      "data": {
+        "url": "data/monthly_public_transport_patronage_by_mode.csv",
+        "format": {"type": "csv"}
+      },
+      "transform": [
+        {
+          "fold": [
+            "Metropolitan train",
+            "Metropolitan tram",
+            "Metropolitan bus",
+            "Regional train",
+            "Regional coach",
+            "Regional bus"
+          ],
+          "as": ["Mode", "Patronage"]
+        },
+        {"calculate": "toNumber(replace(datum.Patronage, ',', ''))", "as": "pax"},
+        {
+          "aggregate": [{"op": "sum", "field": "pax", "as": "trips"}],
+          "groupby": ["Year", "Month"]
+        },
+        {
+          "calculate": "datum.Year + '-' + (datum.Month < 10 ? '0' + datum.Month : '' + datum.Month) + '-01'",
+          "as": "date"
+        },
+        {"calculate": "'Victoria'", "as": "State"}
+      ],
+      "mark": {"type": "line", "strokeWidth": 2, "interpolate": "monotone"},
+      "encoding": {
+        "x": {"field": "date", "type": "temporal", "title": "Month"},
+        "y": {
+          "field": "trips",
+          "type": "quantitative",
+          "title": "Monthly trips",
+          "axis": {"format": ","}
+        },
+        "color": {"field": "State", "type": "nominal"},
+        "tooltip": [
+          {"field": "State"},
+          {"field": "date", "type": "temporal", "timeUnit": "yearmonth", "title": "Month"},
+          {"field": "trips", "type": "quantitative", "format": ",", "title": "Trips"}
+        ]
+      }
+    },
+
+    {
+      "data": {
+        "url": "data/opal_trips_all_modes.csv",
+        "format": {
+          "type": "csv",
+          "parse": {
+            "Year_Month": "date:'%b-%Y'",
+            "Trip": "number"
+          }
+        }
+      },
+      "transform": [
+        {
+          "aggregate": [{"op": "sum", "field": "Trip", "as": "trips"}],
+          "groupby": ["Year_Month"]
+        },
+        {"calculate": "datum.Year_Month", "as": "date"},
+        {"calculate": "'New South Wales'", "as": "State"}
+      ],
+      "mark": {"type": "line", "strokeWidth": 2, "interpolate": "monotone"},
+      "encoding": {
+        "x": {"field": "date", "type": "temporal"},
+        "y": {"field": "trips", "type": "quantitative"},
+        "color": {"field": "State", "type": "nominal"},
+        "tooltip": [
+          {"field": "State"},
+          {"field": "date", "type": "temporal", "timeUnit": "yearmonth", "title": "Month"},
+          {"field": "trips", "type": "quantitative", "format": ",", "title": "Trips"}
+        ]
+      }
+    },
+
+    {
+      "data": {"values": [{"date": "2024-07-01", "label": "NSW methodology change"}]},
+      "mark": {"type": "rule", "strokeDash": [5, 4], "color": "#555"},
+      "encoding": {
+        "x": {"field": "date", "type": "temporal"}
+      }
+    },
+    {
+      "data": {"values": [{"date": "2024-07-01", "label": "NSW method change"}]},
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "dx": 6,
+        "dy": -150,
+        "fontSize": 11,
+        "color": "#555"
+      },
+      "encoding": {
+        "x": {"field": "date", "type": "temporal"},
+        "text": {"field": "label"}
+      }
+    }
+  ]
+}
