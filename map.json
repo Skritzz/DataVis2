@@ -98,7 +98,13 @@
               "title": "Annual entries",
               "axis": {"format": ",", "tickCount": 5}
             },
-            "color": {"value": "#4A90E2"},
+            "color": {
+              "field": "pax",
+              "type": "quantitative",
+              "title": "Annual entries",
+              "scale": {"scheme": {"name": "viridis", "extent": [0.2, 0.9]}},
+              "legend": null
+            },
             "tooltip": [
               {"field": "Stop_name", "title": "Station"},
               {"field": "pax", "title": "Annual entries", "format": ","}
