@@ -4,7 +4,14 @@
   "config": {
     "font": "Inter, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Arial, sans-serif",
     "axis": {"labelColor": "#333", "titleColor": "#333"},
-    "legend": {"labelColor": "#333", "titleColor": "#333"}
+    "axisQuantitative": {"format": ",d"},
+    "legend": {"labelColor": "#333", "titleColor": "#333"},
+    "range": {
+      "category": ["#264653", "#2a9d8f", "#e9c46a", "#f4a261", "#e76f51", "#8ab17d"],
+      "ordinal": ["#fdf6e3", "#f4ce82", "#e9a64d", "#d36931", "#b23a22"],
+      "ramp": ["#fdf6e3", "#f4ce82", "#e9a64d", "#d36931", "#b23a22"],
+      "heatmap": ["#fdf6e3", "#f4ce82", "#e9a64d", "#d36931", "#b23a22"]
+    }
   },
   
   "autosize": { "type": "fit", "contains": "padding" },
@@ -42,7 +49,7 @@
   "params": [
     {
       "name": "modePick",
-      "select": {"type": "point", "fields": ["Mode"]},
+      "select": {"type": "point", "fields": ["Mode"], "toggle": "true"},
       "bind": "legend"
     }
   ],
@@ -60,16 +67,21 @@
       "field": "pax",
       "type": "quantitative",
       "title": "Monthly patronage",
-      "axis": {"format": ","}
+      "axis": {"format": ",d"}
     },
-    "color": {"field": "Mode", "type": "nominal", "title": "Mode"},
+    "color": {
+      "field": "Mode",
+      "type": "nominal",
+      "title": "Mode",
+      "scale": {"range": ["#264653", "#2a9d8f", "#e9c46a", "#f4a261", "#e76f51", "#8ab17d"]}
+    },
     "detail": {"field": "Mode"},
     "opacity": {"condition": {"param": "modePick", "value": 1}, "value": 0.2},
     "tooltip": [
       {"field": "Mode"},
       {"field": "Year"},
       {"field": "Month name", "title": "Month"},
-      {"field": "pax", "title": "Patronage", "format": ","}
+      {"field": "pax", "title": "Patronage", "format": ",d"}
     ]
   }
 }

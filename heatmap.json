@@ -5,7 +5,14 @@
     "view": {"stroke": null},
     "font": "Inter, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Arial, sans-serif",
     "axis": {"labelColor": "#333", "titleColor": "#333"},
-    "legend": {"labelColor": "#333", "titleColor": "#333"}
+    "axisQuantitative": {"format": ",d"},
+    "legend": {"labelColor": "#333", "titleColor": "#333"},
+    "range": {
+      "category": ["#264653", "#2a9d8f", "#e9c46a", "#f4a261", "#e76f51", "#8ab17d"],
+      "ordinal": ["#fdf6e3", "#f4ce82", "#e9a64d", "#d36931", "#b23a22"],
+      "ramp": ["#fdf6e3", "#f4ce82", "#e9a64d", "#d36931", "#b23a22"],
+      "heatmap": ["#fdf6e3", "#f4ce82", "#e9a64d", "#d36931", "#b23a22"]
+    }
   },
 
   "title": {
@@ -72,15 +79,15 @@
       "field": "pax",
       "type": "quantitative",
       "title": "Mean daily patronage",
-      "scale": {"scheme": {"name": "plasma", "extent": [0.15, 0.95]}},
-      "legend": {"format": ","}
+      "scale": {"range": ["#fdf6e3", "#f4ce82", "#e9a64d", "#d36931", "#b23a22"]},
+      "legend": {"format": ",d"}
     },
     "tooltip": [
       {"field": "Mode", "title": "Mode"},
       {"field": "Day_type", "title": "Day type"},
       {"field": "Month_name", "title": "Month"},
       {"field": "Day_of_week", "title": "Day"},
-      {"aggregate": "mean", "field": "pax", "title": "Mean daily patronage", "format": ","}
+      {"aggregate": "mean", "field": "pax", "title": "Mean daily patronage", "format": ",d"}
     ]
   }
 }

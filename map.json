@@ -4,8 +4,16 @@
   "config": {
     "font": "Inter, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Arial, sans-serif",
     "axis": {"labelColor": "#333", "titleColor": "#333"},
-    "legend": {"labelColor": "#333", "titleColor": "#333"}
+    "axisQuantitative": {"format": ",d"},
+    "legend": {"labelColor": "#333", "titleColor": "#333"},
+    "range": {
+      "category": ["#264653", "#2a9d8f", "#e9c46a", "#f4a261", "#e76f51", "#8ab17d"],
+      "ordinal": ["#fdf6e3", "#f4ce82", "#e9a64d", "#d36931", "#b23a22"],
+      "ramp": ["#fdf6e3", "#f4ce82", "#e9a64d", "#d36931", "#b23a22"],
+      "heatmap": ["#fdf6e3", "#f4ce82", "#e9a64d", "#d36931", "#b23a22"]
+    }
   },
+  "spacing": 28,
 
   "params": [
     {
@@ -16,31 +24,54 @@
         "min": 0,
         "max": 20000000,
         "step": 500000,
-        "name": "Minimum annual entries: "
+        "name": "Minimum annual passenger entries: "
       }
     }
   ],
 
-  "hconcat": [
+  "vconcat": [
     {
       "title": {
-        "text": "Melbourne Train Stations — Annual Entries (FY2023–24)",
-        "subtitle": "Stations are sized by total annual entries. Victoria outline provides geographic context.",
+        "text": "Melbourne Train Stations — Annual Passenger Entries (FY2023–24)",
+        "subtitle": "Stations are sized by total annual passenger entries. Victoria outline provides geographic context.",
         "anchor": "start",
         "fontWeight": "bold"
       },
       "width": 720,
       "height": 560,
-      "projection": {"type": "mercator", "center": [144.73, -37.63], "scale": 48000},
+      "projection": {"type": "mercator", "center": [145.07, -37.56], "scale": 42000},
       "layer": [
         {
           "data": {
-            "url": "data/victoria_boundary.json",
-            "format": {"type": "topojson", "feature": "VIC"}
-          },
-          "mark": {"type": "geoshape", "fill": "#f7f7f7", "stroke": "#b0b0b0", "strokeWidth": 0.6}
+            "url": "data/FINALvicmap.json",
+            "format": {"type": "json"}
+          },  
+          "mark": {
+            "type": "geoshape",
+            "fill": "#fdf6e3",
+            "fillOpacity": 0.3,
+            "stroke": "#f4a261",
+            "strokeWidth": 1.2
+          },  
+          "encoding": {
+            "tooltip": [
+              {"field": "SUA_NAME21", "title": "Urban area"},
+              {"field": "SUA_CODE21", "title": "Code"},
+              {"field": "AREASQKM21", "title": "Area (sq km)", "format": ".1f"}
+            ]
+          }
         },
         {
+          "params": [
+            {
+              "name": "mapZoom",
+              "select": {
+                "type": "interval",
+                "encodings": ["x", "y"],
+                "bind": "scales"
+              }
+            }
+          ],
           "data": {
             "url": "data/annual_metropolitan_train_station_entries_fy_2023_2024.csv",
             "format": {"type": "csv"}
@@ -50,10 +81,12 @@
             {"calculate": "toNumber(replace(datum.Stop_lat, ',', ''))", "as": "lat"},
             {"calculate": "toNumber(replace(datum.Pax_annual, ',', ''))", "as": "pax"},
             {"filter": "isFinite(datum.lon) && isFinite(datum.lat) && isFinite(datum.pax)"},
+            {"window": [{"op": "rank", "as": "rk"}], "sort": [{"field": "pax", "order": "descending"}]},
+            {"calculate": "datum.rk <= 10", "as": "isTop10"},
             {"filter": "datum.pax >= minPax"},
             {"calculate": "datum.pax > 0 ? datum.pax : 1", "as": "size_safe"}
           ],
-          "mark": {"type": "circle", "opacity": 0.85, "stroke": "#2f4b63", "strokeWidth": 0.25},
+          "mark": {"type": "circle", "opacity": 0.85, "stroke": "#264653", "strokeWidth": 0.25},
           "encoding": {
             "longitude": {"field": "lon", "type": "quantitative"},
             "latitude": {"field": "lat", "type": "quantitative"},
@@ -61,12 +94,15 @@
               "field": "size_safe",
               "type": "quantitative",
               "scale": {"type": "sqrt", "range": [10, 1600]},
-              "title": "Annual entries"
+              "title": "Annual Passenger entries"
             },
-            "color": {"value": "#4A90E2"},
+            "color": {
+              "condition": {"test": "datum.isTop10", "value": "#d36931"},
+              "value": "#2a9d8f"
+            },
             "tooltip": [
               {"field": "Stop_name", "title": "Station"},
-              {"field": "pax", "title": "Annual entries", "format": ","}
+              {"field": "pax", "title": "Annual Passenger entries", "format": ",d"}
             ]
           }
         }
@@ -74,61 +110,57 @@
     },
 
     {
-      "vconcat": [
-        {
-          "title": {"text": "Top 10 Stations by Annual Entries", "anchor": "start"},
-          "width": 520,
-          "height": 520,
-          "data": {
-            "url": "data/annual_metropolitan_train_station_entries_fy_2023_2024.csv",
-            "format": {"type": "csv"}
-          },
-          "transform": [
-            {"calculate": "toNumber(replace(datum.Pax_annual, ',', ''))", "as": "pax"},
-            {"filter": "isFinite(datum.pax) && datum.pax >= minPax"},
-            {"window": [{"op": "rank", "as": "rk"}], "sort": [{"field": "pax", "order": "descending"}]},
-            {"filter": "datum.rk <= 10"}
-          ],
-          "mark": {"type": "bar", "cornerRadiusEnd": 2},
-          "encoding": {
-            "y": {"field": "Stop_name", "type": "nominal", "sort": "-x", "title": "Station"},
-            "x": {
-              "field": "pax",
-              "type": "quantitative",
-              "title": "Annual entries",
-              "axis": {"format": ",", "tickCount": 5}
-            },
-            "color": {
-              "field": "pax",
-              "type": "quantitative",
-              "title": "Annual entries",
-              "scale": {"scheme": {"name": "viridis", "extent": [0.2, 0.9]}},
-              "legend": null
-            },
-            "tooltip": [
-              {"field": "Stop_name", "title": "Station"},
-              {"field": "pax", "title": "Annual entries", "format": ","}
-            ]
-          }
+      "title": {"text": "Top 10 Stations by Annual Passenger Entries", "anchor": "start"},
+      "width": 720,
+      "height": 520,
+      "data": {
+        "url": "data/annual_metropolitan_train_station_entries_fy_2023_2024.csv",
+        "format": {"type": "csv"}
+      },
+      "transform": [
+        {"calculate": "toNumber(replace(datum.Pax_annual, ',', ''))", "as": "pax"},
+        {"filter": "isFinite(datum.pax) && datum.pax >= minPax"},
+        {"window": [{"op": "rank", "as": "rk"}], "sort": [{"field": "pax", "order": "descending"}]},
+        {"filter": "datum.rk <= 10"}
+      ],
+      "mark": {"type": "bar", "cornerRadiusEnd": 2},
+      "encoding": {
+        "y": {"field": "Stop_name", "type": "nominal", "sort": "-x", "title": "Station"},
+        "x": {
+          "field": "pax",
+          "type": "quantitative",
+          "title": "Annual Passenger entries",
+          "axis": {"format": ",d", "tickCount": 5}
         },
+        "color": {
+          "field": "pax",
+          "type": "quantitative",
+          "title": "Annual Passenger entries",
+          "scale": {"range": ["#fdf6e3", "#f4ce82", "#e9a64d", "#d36931", "#b23a22"]},
+          "legend": null
+        },
+        "tooltip": [
+          {"field": "Stop_name", "title": "Station"},
+          {"field": "pax", "title": "Annual Passenger entries", "format": ",d"}
+        ]
+      }
+    },
 
-        {
-          "width": 520,
-          "height": 28,
-          "data": {"values": [{}]},
-          "transform": [
-            {"calculate": "'Minimum annual entries: ' + format(minPax, ',')", "as": "label"}
-          ],
-          "mark": {"type": "text", "align": "left", "baseline": "middle"},
-          "encoding": {
-            "x": {"value": 0},
-            "y": {"value": 14},
-            "text": {"field": "label"},
-            "color": {"value": "#333"},
-            "size": {"value": 12}
-          }
-        }
-      ]
+    {
+      "width": 720,
+      "height": 28,
+      "data": {"values": [{}]},
+      "transform": [
+        {"calculate": "'Minimum annual passenger entries: ' + format(minPax, ',d')", "as": "label"}
+      ],
+      "mark": {"type": "text", "align": "left", "baseline": "middle"},
+      "encoding": {
+        "x": {"value": 0},
+        "y": {"value": 14},
+        "text": {"field": "label"},
+        "color": {"value": "#333"},
+        "size": {"value": 12}
+      }
     }
   ],
 
