@@ -39,7 +39,18 @@
       },
       "width": 720,
       "height": 560,
+      "view": {"stroke": null},
       "projection": {"type": "mercator", "center": [145.07, -37.56], "scale": 42000},
+      "params": [
+        {
+          "name": "zoomBrush",
+          "select": {
+            "type": "interval",
+            "encodings": ["x", "y"],
+            "bind": "scales"
+          }
+        }
+      ],
       "layer": [
         {
           "data": {
@@ -62,16 +73,6 @@
           }
         },
         {
-          "params": [
-            {
-              "name": "mapZoom",
-              "select": {
-                "type": "interval",
-                "encodings": ["x", "y"],
-                "bind": "scales"
-              }
-            }
-          ],
           "data": {
             "url": "data/annual_metropolitan_train_station_entries_fy_2023_2024.csv",
             "format": {"type": "csv"}
