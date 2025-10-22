@@ -41,16 +41,6 @@
       "height": 560,
       "view": {"stroke": null},
       "projection": {"type": "mercator", "center": [145.07, -37.56], "scale": 42000},
-      "params": [
-        {
-          "name": "zoomBrush",
-          "select": {
-            "type": "interval",
-            "encodings": ["x", "y"],
-            "bind": "scales"
-          }
-        }
-      ],
       "layer": [
         {
           "data": {
@@ -63,13 +53,6 @@
             "fillOpacity": 0.3,
             "stroke": "#f4a261",
             "strokeWidth": 1.2
-          },  
-          "encoding": {
-            "tooltip": [
-              {"field": "SUA_NAME21", "title": "Urban area"},
-              {"field": "SUA_CODE21", "title": "Code"},
-              {"field": "AREASQKM21", "title": "Area (sq km)", "format": ".1f"}
-            ]
           }
         },
         {
