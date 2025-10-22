@@ -6,63 +6,78 @@
   <title>Victorian Public Transport</title>
 
 <style>
-  :root { --maxw: 1200px; }
+  :root {
+    --maxw: 1280px;
+    --grid-gap: 24px;
+  }
 
   /* Page basics */
-  body{
-    font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Arial,sans-serif;
-    margin:24px;
-    line-height:1.45
+  body {
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Arial, sans-serif;
+    margin: 16px;
+    line-height: 1.45;
+    color: #222;
   }
-  header, .grid, footer{
-    max-width:var(--maxw);
-    margin:0 auto
+  header, .grid, footer {
+    max-width: var(--maxw);
+    margin: 0 auto;
   }
-  header h1{ margin-bottom:.25rem }
+  header h1 { margin-bottom: .35rem; }
+  header p {
+    margin-top: 0;
+    margin-bottom: 1.2rem;
+  }
 
   /* Dashboard grid */
-  .grid{
-    display:grid;
+  .grid {
+    display: grid;
     grid-template-columns: 1fr;          /* single column on small screens */
-    gap: 28px;
+    gap: var(--grid-gap);
   }
 
   /* 2×2 layout on wide screens */
-  @media (min-width:1100px){
-    .grid{
-      grid-template-columns: repeat(2, minmax(0, 1fr));  /* 2 equal columns */
-      align-items: start;                                 /* align to top */
-      justify-items: stretch;                             /* stretch to cell */
-      column-gap: 32px;
-      row-gap: 36px;
+  @media (min-width: 1100px) {
+    .grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      align-items: start;
     }
   }
 
   /* Cards & embeds */
-  .card{ width:100%; }
-  .vis, .vega-embed{ width:100%; }       /* let charts fill their cells */
+  .card {
+    width: 100%;
+    padding: 16px 18px 20px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 8px 22px rgba(0,0,0,0.08);
+    overflow: hidden;
+  }
+  .card h3 {
+    margin: 0 0 12px;
+    font-size: 1.05rem;
+  }
+  .card > h3 { padding: 0 14px; }
+
+  .vis {
+    width: 100%;
+    box-sizing: border-box;
+  }
+  .vega-embed { width: 100%; }
+
+  @media (min-width: 1100px) {
+    .card-span-2 { grid-column: span 2; }
+  }
+
+  .stack {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .stack section { padding: 0; }
 
   /* Optional: a touch more breathing room */
-  small, a{ color:#555 }
-
-  /* Make the last card span both columns */
-@media (min-width:1100px){
-  .card.full {
-    grid-column: span 2;
-  }
-}
-
-/* Stack heatmap and trends nicely within that card */
-.stack {
-  display: flex;
-  flex-direction: column;
-  gap: 28px;
-}
-
-.stack .vis {
-  width: 100%;
-  min-height: 400px;
-}
+  small, a { color: #555; }
 
 </style>
 
@@ -81,29 +96,22 @@
   </header>
 
   <section class="grid">
-    <!-- Row 1: Map + Bars -->
-    <div class="card">
-      <h3>Proportional Symbol Map</h3>
-      <div id="map" class="vis" aria-label="Map of station patronage"></div>
+    <!-- Map + Top stations combined spec -->
+    <div class="card card-span-2">
+      <h3>Map & Top Stations Overview</h3>
+      <div id="map" class="vis" aria-label="Map and top stations linked by slider"></div>
     </div>
 
-    <div class="card">
-      <h3>Top Stations</h3>
-      <div id="bars" class="vis" aria-label="Top stations bar chart"></div>
-    </div>
-
-    <!-- Row 2: Heatmap + Trends stacked in one column -->
-    <div class="card full">
+    <div class="card card-span-2">
       <div class="stack">
-        <div>
+        <section>
           <h3>Patronage Heatmap (FY2024–25)</h3>
           <div id="heatmap" class="vis" aria-label="Patronage heatmap"></div>
-        </div>
-
-        <div>
+        </section>
+        <section>
           <h3>Monthly Patronage Trends by Mode</h3>
           <div id="trends" class="vis" aria-label="Monthly trends by mode"></div>
-        </div>
+        </section>
       </div>
     </div>
   </section>
@@ -111,7 +119,7 @@
 
   
   <footer class="vis">
-    <hr>
+    <hr />
     <small>
       Sources: PTV Public Transport Stops & Annual metropolitan train station patronage (CSV). Built with Vega-Lite.
     </small>

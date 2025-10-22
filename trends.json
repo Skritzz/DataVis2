@@ -16,7 +16,7 @@
   
   "autosize": { "type": "fit", "contains": "padding" },
   "width": "container",
-  "height": 400,
+  "height": 220,
 
   "data": {
     "url": "data/monthly_public_transport_patronage_by_mode.csv",
