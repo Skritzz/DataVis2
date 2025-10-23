@@ -3,7 +3,7 @@
   "description": "FY2024–25 patronage heatmap by day of week (x) and month (y), filtered by Mode and Day type.",
   "config": {
     "view": {"stroke": null},
-    "font": "Inter, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Arial, sans-serif",
+    "font": "VicSans, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Arial, sans-serif",
     "axis": {"labelColor": "#333", "titleColor": "#333"},
     "axisQuantitative": {"format": ",d"},
     "legend": {"labelColor": "#333", "titleColor": "#333"},
@@ -16,8 +16,8 @@
   },
 
   "title": {
-    "text": "Average Patronage Heatmap (FY2024–25)",
-    "subtitle": "Select a mode and a day type. Color shows mean of daily average patronage (Pax_daily).",
+    "text": "Average Patronage Heatmap",
+    "subtitle": "Select a mode and a day type. Color shows mean of daily average patronage.",
     "anchor": "start",
     "fontWeight": "bold"
   },
@@ -79,7 +79,7 @@
       "field": "pax",
       "type": "quantitative",
       "title": "Mean daily patronage",
-      "scale": {"range": ["#fdf6e3", "#f4ce82", "#e9a64d", "#d36931", "#b23a22"]},
+      "scale": {"range": ["#e0f6f7", "#b9e4e6", "#5dc3c8", "#00767f", "#333f48"]},
       "legend": {"format": ",d"}
     },
     "tooltip": [

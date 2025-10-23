@@ -2,15 +2,15 @@
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "description": "Melbourne train stations — proportional map and linked bar chart with passenger threshold slider.",
   "config": {
-    "font": "Inter, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Arial, sans-serif",
-    "axis": {"labelColor": "#333", "titleColor": "#333"},
+    "font": "VicSans, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Arial, sans-serif",
+    "axis": {"labelColor": "#333f48", "titleColor": "#333f48"},
     "axisQuantitative": {"format": ",d"},
-    "legend": {"labelColor": "#333", "titleColor": "#333"},
+    "legend": {"labelColor": "#333f48", "titleColor": "#333f48"},
     "range": {
-      "category": ["#264653", "#2a9d8f", "#e9c46a", "#f4a261", "#e76f51", "#8ab17d"],
-      "ordinal": ["#fdf6e3", "#f4ce82", "#e9a64d", "#d36931", "#b23a22"],
-      "ramp": ["#fdf6e3", "#f4ce82", "#e9a64d", "#d36931", "#b23a22"],
-      "heatmap": ["#fdf6e3", "#f4ce82", "#e9a64d", "#d36931", "#b23a22"]
+      "category": ["#00a3ad", "#f26d04", "#6e2585", "#333f48", "#75787b", "#7ba3d7"],
+      "ordinal": ["#e0f6f7", "#b9e4e6", "#5dc3c8", "#00767f", "#333f48"],
+      "ramp": ["#e0f6f7", "#b9e4e6", "#5dc3c8", "#00767f", "#333f48"],
+      "heatmap": ["#e0f6f7", "#b9e4e6", "#5dc3c8", "#00767f", "#333f48"]
     }
   },
 
@@ -34,8 +34,8 @@
   "vconcat": [
     {
       "title": {
-        "text": "Melbourne Train Stations — Annual Passenger Entries (FY2023–24)",
-        "subtitle": "Circles scale with annual entries. Victoria outline provides geographic context.",
+        "text": "Melbourne Train Stations: Annual Passenger Entries (FY2023–24)",
+        "subtitle": "Circles scale with annual entries. Metropolitan Melbourne outline provides geographic context.",
         "anchor": "start",
         "fontWeight": "bold"
       },
@@ -83,8 +83,8 @@
                   "title": "Annual passenger entries"
                 },
             "color": {
-              "condition": {"test": "datum.isTop10", "value": "#d36931"},
-              "value": "#2a9d8f"
+              "condition": {"test": "datum.isTop10", "value": "#f26d04"},
+              "value": "#00a3ad"
             },
             "tooltip": [
               {"field": "Stop_name", "title": "Station"},
@@ -96,7 +96,27 @@
     },
 
     {
-      "title": {"text": "Top 10 Stations by Annual Passenger Entries", "anchor": "start"},
+      "width": 1000,
+      "height": 28,
+      "data": {
+        "values": [
+          {
+            "text": "Use the slider to surface quieter stations and see how the spatial footprint shifts as you drop the threshold."
+          }
+        ]
+      },
+      "mark": {"type": "text", "align": "left", "baseline": "middle"},
+      "encoding": {
+        "x": {"value": 0},
+        "y": {"value": 14},
+        "text": {"field": "text"},
+        "color": {"value": "#333f48"},
+        "size": {"value": 12}
+      }
+    },
+
+    {
+      "title": {"text": "Top 10 Stations by Annual Passenger Entries(FY2023–24)", "anchor": "start"},
       "width": 1000,
       "height": 500,
       "data": {
@@ -127,7 +147,7 @@
           "field": "pax",
           "type": "quantitative",
           "title": "Annual passenger entries",
-          "scale": {"range": ["#fdf6e3", "#f4ce82", "#e9a64d", "#d36931", "#b23a22"]},
+          "scale": {"range": ["#e0f6f7", "#b9e4e6", "#5dc3c8", "#00767f", "#333f48"]},
           "legend": null
         },
         "tooltip": [
@@ -149,7 +169,7 @@
         "x": {"value": 0},
         "y": {"value": 11},
         "text": {"field": "label"},
-        "color": {"value": "#333"},
+        "color": {"value": "#333f48"},
         "size": {"value": 11}
       }
     }

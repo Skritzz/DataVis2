@@ -2,15 +2,15 @@
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "description": "Monthly patronage by transport mode with corresponding contributions to the system total.",
   "config": {
-    "font": "Inter, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Arial, sans-serif",
-    "axis": {"labelColor": "#333", "titleColor": "#333"},
+    "font": "VicSans, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Arial, sans-serif",
+    "axis": {"labelColor": "#333f48", "titleColor": "#333f48"},
     "axisQuantitative": {"format": ",d"},
-    "legend": {"labelColor": "#333", "titleColor": "#333"},
+    "legend": {"labelColor": "#333f48", "titleColor": "#333f48"},
     "range": {
-      "category": ["#264653", "#2a9d8f", "#e9c46a", "#f4a261", "#e76f51", "#8ab17d"],
-      "ordinal": ["#fdf6e3", "#f4ce82", "#e9a64d", "#d36931", "#b23a22"],
-      "ramp": ["#fdf6e3", "#f4ce82", "#e9a64d", "#d36931", "#b23a22"],
-      "heatmap": ["#fdf6e3", "#f4ce82", "#e9a64d", "#d36931", "#b23a22"]
+      "category": ["#00a3ad", "#f26d04", "#6e2585", "#333f48", "#75787b", "#7ba3d7"],
+      "ordinal": ["#e0f6f7", "#b9e4e6", "#5dc3c8", "#00767f", "#333f48"],
+      "ramp": ["#e0f6f7", "#b9e4e6", "#5dc3c8", "#00767f", "#333f48"],
+      "heatmap": ["#e0f6f7", "#b9e4e6", "#5dc3c8", "#00767f", "#333f48"]
     }
   },
   "autosize": {"type": "fit", "contains": "padding"},
@@ -72,7 +72,7 @@
           "field": "Mode",
           "type": "nominal",
           "title": "Mode",
-          "scale": {"range": ["#264653", "#2a9d8f", "#e9c46a", "#f4a261", "#e76f51", "#8ab17d"]},
+          "scale": {"range": ["#00a3ad", "#f26d04", "#6e2585", "#333f48", "#75787b", "#7ba3d7"]},
           "legend": {"orient": "bottom", "direction": "horizontal", "title": "Mode"}
         },
         "detail": {"field": "Mode"},
@@ -118,7 +118,7 @@
           "field": "Mode",
           "type": "nominal",
           "title": "Mode",
-          "scale": {"range": ["#264653", "#2a9d8f", "#e9c46a", "#f4a261", "#e76f51", "#8ab17d"]},
+          "scale": {"range": ["#00a3ad", "#f26d04", "#6e2585", "#333f48", "#75787b", "#7ba3d7"]},
           "legend": null
         },
         "opacity": {
@@ -134,6 +134,26 @@
           {"field": "monthTotal", "title": "Monthly total", "format": ",d"},
           {"field": "share", "title": "Mode share", "format": ".1%"}
         ]
+      }
+    }
+    ,
+    {
+      "width": 1100,
+      "height": 32,
+      "data": {
+        "values": [
+          {
+            "text": "Toggle modes in the legend to focus on a service and watch the stacked share respond."
+          }
+        ]
+      },
+      "mark": {"type": "text", "align": "left", "baseline": "middle"},
+      "encoding": {
+        "x": {"value": 0},
+        "y": {"value": 16},
+        "text": {"field": "text"},
+        "color": {"value": "#333f48"},
+        "size": {"value": 12}
       }
     }
   ]

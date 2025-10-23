@@ -6,26 +6,59 @@
   <title>Victorian Public Transport</title>
 
 <style>
+  @font-face {
+    font-family: 'VicSans';
+    src: url('https://www.vic.gov.au/sites/default/files/2021-07/VicSans-Regular.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'VicSans';
+    src: url('https://www.vic.gov.au/sites/default/files/2021-07/VicSans-SemiBold.woff2') format('woff2');
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'VicSans';
+    src: url('https://www.vic.gov.au/sites/default/files/2021-07/VicSans-Bold.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+  }
+
   :root {
     --maxw: 1280px;
     --grid-gap: 24px;
+    --ptv-teal: #00a3ad;
+    --ptv-dark: #333f48;
+    --ptv-mid: #75787b;
+    --ptv-light: #f2f5f6;
+    --ptv-orange: #f26d04;
   }
 
   /* Page basics */
   body {
-    font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Arial, sans-serif;
+    font-family: 'VicSans', system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Arial, sans-serif;
     margin: 16px;
     line-height: 1.45;
-    color: #222;
+    color: var(--ptv-dark);
+    background: var(--ptv-light);
   }
   header, .grid, footer {
     max-width: var(--maxw);
     margin: 0 auto;
   }
-  header h1 { margin-bottom: .35rem; }
+  header h1 {
+    margin-bottom: .35rem;
+    color: var(--ptv-teal);
+    font-weight: 700;
+  }
   header p {
     margin-top: 0;
     margin-bottom: 1.2rem;
+    color: var(--ptv-mid);
   }
 
   /* Dashboard grid */
@@ -47,14 +80,16 @@
   .card {
     width: 100%;
     padding: 16px 18px 20px;
-    background: #fff;
+    background: #ffffff;
     border-radius: 12px;
-    box-shadow: 0 8px 22px rgba(0,0,0,0.08);
+    box-shadow: 0 8px 22px rgba(0,0,0,0.07);
     overflow: hidden;
+    border: 1px solid rgba(51,63,72,0.08);
   }
   .card h3 {
     margin: 0 0 12px;
     font-size: 1.05rem;
+    color: var(--ptv-dark);
   }
   .card > h3 { padding: 0 14px; }
 
@@ -77,7 +112,10 @@
   .stack section { padding: 0; }
 
   /* Optional: a touch more breathing room */
-  small, a { color: #555; }
+  small, a { color: var(--ptv-mid); }
+
+  a { text-decoration-color: rgba(0,163,173,0.4); }
+  a:hover { color: var(--ptv-teal); }
 
 </style>
 
@@ -99,18 +137,23 @@
     <!-- Map + Top stations combined spec -->
     <div class="card card-span-2">
       <h3>Map & Top Stations Overview</h3>
+      <p class="deck"><em>Station patronage concentrates heavily in the inner city, with the ten busiest stops spanning the City Loop and key suburban gateways.</em></p>
       <div id="map" class="vis" aria-label="Map and top stations linked by slider"></div>
-      <p class="deck">Station patronage concentrates heavily in the inner city, with the ten busiest stops spanning the City Loop and key suburban gateways. Use the slider to surface quieter stations and see how the spatial footprint shifts as you drop the threshold.</p>
+      <p class="deck"><em>Most of the ten busiest stations act as multi-line interchanges, so transfer hubs concentrate much of the demand.</em></p>
     </div>
 
     <div class="card card-span-2">
       <h3>Patronage Heatmap (FY2024–25)</h3>
+      <p class="deck"><em>Heatmap reveals weekday peaks and a clear winter lull.</em></p>
       <div id="heatmap" class="vis" aria-label="Patronage heatmap"></div>
+      <p class="deck"><em>Allows for quick identification of patterns across different days and months. Allowing for governing bodies to add or remove services accordingly.</em></p>
     </div>
 
     <div class="card card-span-2">
       <h3>Monthly Patronage Trends & Mode Contribution</h3>
+      <p class="deck"><em>Monthly lines show long-term trends and pandemic recovery; the stacked view highlights how modes share the task.</em></p>
       <div id="trends" class="vis" aria-label="Monthly trends and mode contributions"></div>
+      <p class="deck"><em></em></p>
     </div>
   </section>
 
