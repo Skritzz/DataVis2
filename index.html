@@ -38,7 +38,6 @@
     --ptv-orange: #f26d04;
   }
 
-  /* Page basics */
   body {
     font-family: 'VicSans', system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Arial, sans-serif;
     margin: 16px;
@@ -61,14 +60,12 @@
     color: var(--ptv-mid);
   }
 
-  /* Dashboard grid */
   .grid {
     display: grid;
-    grid-template-columns: 1fr;          /* single column on small screens */
+    grid-template-columns: 1fr;
     gap: var(--grid-gap);
   }
 
-  /* 2×2 layout on wide screens */
   @media (min-width: 1100px) {
     .grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -76,7 +73,6 @@
     }
   }
 
-  /* Cards & embeds */
   .card {
     width: 100%;
     padding: 16px 18px 20px;
@@ -111,7 +107,6 @@
 
   .stack section { padding: 0; }
 
-  /* Optional: a touch more breathing room */
   small, a { color: var(--ptv-mid); }
 
   a { text-decoration-color: rgba(0,163,173,0.4); }
@@ -121,7 +116,6 @@
 
 
 
-  <!-- Vega libraries -->
   <script src="https://cdn.jsdelivr.net/npm/vega@5/build/vega.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/vega-lite@5/build/vega-lite.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/vega-embed@6/build/vega-embed.min.js"></script>
@@ -134,7 +128,6 @@
   </header>
 
   <section class="grid">
-    <!-- Map + Top stations combined spec -->
     <div class="card card-span-2">
       <h3>Map & Top Stations Overview</h3>
       <p class="deck"><em>Station patronage concentrates heavily in the inner city, with the ten busiest stops spanning the City Loop and key suburban gateways.</em></p>
