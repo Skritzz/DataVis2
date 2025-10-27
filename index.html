@@ -136,6 +136,13 @@
     </div>
 
     <div class="card card-span-2">
+      <h3>Station Growth Scatter</h3>
+      <p class="deck"><em>Log-scale scatter benchmarks each station’s annual entries over the past two financial years — size flags current volume while colour shows growth direction.</em></p>
+      <div id="station-growth" class="vis" aria-label="Scatterplot of FY2023–24 vs FY2024–25 station entries"></div>
+      <p class="deck"><em>Use the slider to surface quieter stops; points above the dashed line outperformed last year while those below lost patronage.</em></p>
+    </div>
+
+    <div class="card card-span-2">
       <h3>Patronage Heatmap (FY2024–25)</h3>
       <p class="deck"><em>Heatmap reveals weekday peaks and a clear winter lull.</em></p>
       <div id="heatmap" class="vis" aria-label="Patronage heatmap"></div>
@@ -161,6 +168,7 @@
 
   <script>
     vegaEmbed('#map',     'map.json',     {actions:false}).catch(console.error);
+    vegaEmbed('#station-growth', 'station_growth.json', {actions:false}).catch(console.error);
     vegaEmbed('#heatmap', 'heatmap.json', {actions:false}).catch(console.error);
     vegaEmbed('#trends',  'trends.json',  {actions:false}).catch(console.error);
   </script>

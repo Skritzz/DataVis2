@@ -1,0 +1,162 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Scatterplot comparing FY2023–24 and FY2024–25 annual station entries with colour for percentage growth.",
+  "config": {
+    "font": "VicSans, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Arial, sans-serif",
+    "axis": {"labelColor": "#333f48", "titleColor": "#333f48"},
+    "axisQuantitative": {"format": ",d"},
+    "legend": {"labelColor": "#333f48", "titleColor": "#333f48"},
+    "range": {
+      "category": ["#00a3ad", "#f26d04", "#6e2585", "#333f48", "#75787b", "#7ba3d7"],
+      "ordinal": ["#e0f6f7", "#b9e4e6", "#5dc3c8", "#00767f", "#333f48"],
+      "ramp": ["#e0f6f7", "#b9e4e6", "#5dc3c8", "#00767f", "#333f48"],
+      "heatmap": ["#e0f6f7", "#b9e4e6", "#5dc3c8", "#00767f", "#333f48"]
+    }
+  },
+  "title": {
+    "text": "Station Growth: FY2023–24 vs FY2024–25",
+    "subtitle": "Circles scale with FY2024–25 entries; colour shows year-on-year growth. Points above the line grew faster than last year.",
+    "anchor": "start",
+    "fontWeight": "bold"
+  },
+  "width": 1000,
+  "height": 600,
+  "data": {
+    "url": "data/annual_metropolitan_train_station_entries_fy_2024_2025.csv",
+    "format": {"type": "csv"}
+  },
+  "params": [
+    {
+      "name": "minPax",
+      "value": 20000,
+      "bind": {
+        "input": "range",
+        "min": 0,
+        "max": 12000000,
+        "step": 100000,
+        "name": "Minimum annual entries (either year): "
+      }
+    }
+  ],
+  "transform": [
+    {
+      "calculate": "toNumber(replace(datum.Pax_annual || '', ',', ''))",
+      "as": "pax_2024_25"
+    },
+    {
+      "lookup": "Stop_ID",
+      "from": {
+        "data": {
+          "url": "data/annual_metropolitan_train_station_entries_fy_2023_2024.csv",
+          "format": {"type": "csv"}
+        },
+        "key": "Stop_ID",
+        "fields": ["Pax_annual"]
+      },
+      "as": ["pax_2023_24_raw"]
+    },
+    {
+      "calculate": "toNumber(replace(datum.pax_2023_24_raw || '', ',', ''))",
+      "as": "pax_2023_24"
+    },
+    {
+      "filter": "isFinite(datum.pax_2024_25) && isFinite(datum.pax_2023_24) && datum.pax_2024_25 > 0 && datum.pax_2023_24 > 0"
+    },
+    {
+      "filter": "(datum.pax_2024_25 >= minPax) || (datum.pax_2023_24 >= minPax)"
+    },
+    {
+      "calculate": "(datum.pax_2024_25 - datum.pax_2023_24) / datum.pax_2023_24",
+      "as": "growth_pct"
+    },
+    {
+      "calculate": "datum.pax_2024_25 - datum.pax_2023_24",
+      "as": "delta"
+    },
+    {
+      "window": [{"op": "rank", "as": "rank_2024_25"}],
+      "sort": [{"field": "pax_2024_25", "order": "descending"}]
+    },
+    {
+      "calculate": "datum.rank_2024_25 <= 12 || abs(datum.growth_pct) >= 0.3 ? datum.Stop_name : ''",
+      "as": "label"
+    }
+  ],
+  "layer": [
+    {
+      "data": {
+        "values": [
+          {"pax": 1000},
+          {"pax": 20000000}
+        ]
+      },
+      "mark": {"type": "line", "strokeDash": [4, 4], "color": "#75787b"},
+      "encoding": {
+        "x": {"field": "pax", "type": "quantitative"},
+        "y": {"field": "pax", "type": "quantitative"}
+      }
+    },
+    {
+      "mark": {
+        "type": "point",
+        "filled": true,
+        "opacity": 0.85,
+        "stroke": "#333f48",
+        "strokeWidth": 0.6
+      },
+      "encoding": {
+        "x": {
+          "field": "pax_2023_24",
+          "type": "quantitative",
+          "title": "FY2023–24 annual entries",
+          "axis": {"format": ",d"},
+          "scale": {"type": "log"}
+        },
+        "y": {
+          "field": "pax_2024_25",
+          "type": "quantitative",
+          "title": "FY2024–25 annual entries",
+          "axis": {"format": ",d"},
+          "scale": {"type": "log"}
+        },
+        "size": {
+          "field": "pax_2024_25",
+          "type": "quantitative",
+          "title": "FY2024–25 entries",
+          "scale": {"type": "sqrt", "range": [20, 900]}
+        },
+        "color": {
+          "field": "growth_pct",
+          "type": "quantitative",
+          "title": "Year-on-year change",
+          "scale": {"scheme": "redblue", "domainMid": 0},
+          "legend": {"format": ".0%"}
+        },
+        "tooltip": [
+          {"field": "Stop_name", "title": "Station"},
+          {"field": "pax_2023_24", "title": "FY2023–24 entries", "format": ",d"},
+          {"field": "pax_2024_25", "title": "FY2024–25 entries", "format": ",d"},
+          {"field": "delta", "title": "Change", "format": ",d"},
+          {"field": "growth_pct", "title": "Growth", "format": "+.1%"}
+        ]
+      }
+    },
+    {
+      "transform": [{"filter": "datum.label != ''"}],
+      "mark": {"type": "text", "align": "left", "dx": 6, "dy": -4, "fontSize": 11, "color": "#333f48"},
+      "encoding": {
+        "x": {
+          "field": "pax_2023_24",
+          "type": "quantitative",
+          "scale": {"type": "log"}
+        },
+        "y": {
+          "field": "pax_2024_25",
+          "type": "quantitative",
+          "scale": {"type": "log"}
+        },
+        "text": {"field": "label"}
+      }
+    }
+  ]
+}
