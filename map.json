@@ -129,32 +129,109 @@
         {"window": [{"op": "rank", "as": "rk"}], "sort": [{"field": "pax", "order": "descending"}]},
         {"filter": "datum.rk <= 10"}
       ],
-      "mark": {"type": "bar", "cornerRadiusEnd": 2},
-      "encoding": {
-        "y": {
-          "field": "Stop_name",
-          "type": "nominal",
-          "sort": "-x",
-          "title": "Station"
+      "layer": [
+        {
+          "mark": {"type": "bar", "cornerRadiusEnd": 2},
+          "encoding": {
+            "y": {
+              "field": "Stop_name",
+              "type": "nominal",
+              "sort": "-x",
+              "title": "Station"
+            },
+            "x": {
+              "field": "pax",
+              "type": "quantitative",
+              "title": "Annual passenger entries",
+              "axis": {"format": ",d", "tickCount": 4}
+            },
+            "color": {
+              "field": "pax",
+              "type": "quantitative",
+              "title": "Annual passenger entries",
+              "scale": {"range": ["#e0f6f7", "#b9e4e6", "#5dc3c8", "#00767f", "#333f48"]},
+              "legend": null
+            },
+            "tooltip": [
+              {"field": "Stop_name", "title": "Station"},
+              {"field": "pax", "title": "Annual passenger entries", "format": ",d"}
+            ]
+          }
         },
-        "x": {
-          "field": "pax",
-          "type": "quantitative",
-          "title": "Annual passenger entries",
-          "axis": {"format": ",d", "tickCount": 4}
-        },
-        "color": {
-          "field": "pax",
-          "type": "quantitative",
-          "title": "Annual passenger entries",
-          "scale": {"range": ["#e0f6f7", "#b9e4e6", "#5dc3c8", "#00767f", "#333f48"]},
-          "legend": null
-        },
-        "tooltip": [
-          {"field": "Stop_name", "title": "Station"},
-          {"field": "pax", "title": "Annual passenger entries", "format": ",d"}
+        {
+          "mark": {
+            "type": "text",
+            "align": "right",
+            "baseline": "bottom",
+            "fontSize": 12,
+            "dx": -6,
+            "dy": -4,
+            "color": "#333f48"
+          },
+          "encoding": {
+            "x": {"value": 900},
+            "y": {"value": 488},
+            "text": {
+              "value": "Most of the ten busiest stations act as multi-line interchanges,\nso transfer hubs concentrate much of the demand."
+            }
+          }
+        }
+      ]
+    },
+
+    {
+      "title": {"text": "Colour key — annual passenger entries", "anchor": "start"},
+      "width": 1000,
+      "height": 70,
+      "view": {"stroke": null},
+      "data": {
+        "values": [
+          {"label": "< 3M entries", "order": 1},
+          {"label": "3M – 4M entries", "order": 2},
+          {"label": "4M – 6M entries", "order": 3},
+          {"label": "6M – 12M entries", "order": 4},
+          {"label": "12M+ entries", "order": 5}
         ]
-      }
+      },
+      "encoding": {
+        "x": {
+          "field": "order",
+          "type": "ordinal",
+          "sort": "ascending",
+          "axis": null,
+          "scale": {"padding": 0.3}
+        },
+        "y": {"value": 20}
+      },
+      "layer": [
+        {
+          "mark": {"type": "point", "shape": "square", "filled": true, "size": 900},
+          "encoding": {
+            "color": {
+              "field": "label",
+              "type": "nominal",
+              "scale": {
+                "domain": [
+                  "< 3M entries",
+                  "3M – 4M entries",
+                  "4M – 6M entries",
+                  "6M – 12M entries",
+                  "12M+ entries"
+                ],
+                "range": ["#e0f6f7", "#b9e4e6", "#5dc3c8", "#00767f", "#333f48"]
+              },
+              "legend": null
+            }
+          }
+        },
+        {
+          "mark": {"type": "text", "dy": 24, "fontSize": 11, "align": "center", "baseline": "top"},
+          "encoding": {
+            "text": {"field": "label"},
+            "color": {"value": "#333f48"}
+          }
+        }
+      ]
     },
 
     {
