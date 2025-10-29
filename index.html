@@ -143,16 +143,28 @@
 
     <div class="card card-span-2">
       <h3>Patronage Heatmap (FY2024–25)</h3>
-      <p class="deck"><em>Heatmap reveals weekday peaks. January has no normal weekday data for Monday or Tuesday, as all Mondays and Tuesdays are within school holidays.</em></p>
+      <p class="deck"><em>Heatmap reveals weekday peaks, surfacing callouts for March’s mid-week surge, the December holiday dip, and weekends where Saturdays outpace Sundays. January has no normal weekday data for Monday or Tuesday because all of those days fall within the school holidays.</em></p>
       <div id="heatmap" class="vis" aria-label="Patronage heatmap"></div>
       <p class="deck"><em>Allows for quick identification of patterns across different days and months. Allowing for governing bodies to add or remove services accordingly.</em></p>
     </div>
 
     <div class="card card-span-2">
       <h3>Monthly Patronage Trends & Mode Contribution</h3>
-      <p class="deck"><em>Monthly lines show long-term trends and pandemic recovery; the stacked view highlights how modes share the task.</em></p>
+      <p class="deck"><em>Monthly lines show long-term trends and pandemic affect. The stacked view highlights how transport modes share the passenger load.</em></p>
       <div id="trends" class="vis" aria-label="Monthly trends and mode contributions"></div>
       <p class="deck"><em></em></p>
+    </div>
+
+    <div class="card card-span-2">
+      <h3>Key Takeaways</h3>
+      <p class="deck"><em>Key insights to guide further exploration across the dashboard.</em></p>
+      <ul>
+        <li><strong>March mid-week surge:</strong> MetroTrain patronage tops 740k on Thursdays, with trams and regional trains also peaking - suggesting late-summer event pressure.</li>
+        <li><strong>Holiday lull:</strong> December Mondays barely reach 460k boardings, confirming school holidays flatten the commuter baseline.</li>
+        <li><strong>Weekend split:</strong> Saturdays reliably outdraw Sundays on every mode, change the heatmap to Weekend to see the annotation quantifying the gap.</li>
+        <li><strong>Inner-city concentration:</strong> The map keeps City Loop stations at the top while the growth scatter highlights emerging outer-suburban hubs.</li>
+        <li><strong>Recovery trajectory:</strong> Monthly totals for FY2024–25 stay ahead of the previous year, though winter softness remains a watchpoint.</li>
+      </ul>
     </div>
   </section>
 
@@ -161,7 +173,7 @@
   <footer class="vis">
     <hr />
     <small>
-      Sources: PTV Public Transport Stops & Annual metropolitan train station patronage (CSV). Built with Vega-Lite.
+      Sources: Vic Dept of Transport & Planning patronage datasets; Vicmap transport boundary. Built with Vega-Lite.
     </small>
   </footer>
 
