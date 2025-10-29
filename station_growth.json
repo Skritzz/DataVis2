@@ -157,6 +157,46 @@
         },
         "text": {"field": "label"}
       }
+    },
+    {
+      "data": {
+        "values": [
+          {
+            "x": 1800000,
+            "y": 12000000,
+            "annotation": "City Loop heavyweights stay well above 10M trips while edging just above the parity line."
+          },
+          {
+            "x": 90000,
+            "y": 420000,
+            "annotation": "Outer growth corridor stations (East Pakenham, Narre Warren) more than doubled entries year-on-year."
+          }
+        ]
+      },
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "baseline": "middle",
+        "dx": 8,
+        "dy": -6,
+        "fontSize": 12,
+        "fontWeight": "600",
+        "color": "#333f48"
+      },
+      "encoding": {
+        "x": {
+          "field": "x",
+          "type": "quantitative",
+          "scale": {"type": "log"}
+        },
+        "y": {
+          "field": "y",
+          "type": "quantitative",
+          "scale": {"type": "log"}
+        },
+        "text": {"field": "annotation"},
+        "tooltip": [{"field": "annotation", "title": "Insight"}]
+      }
     }
   ]
 }
